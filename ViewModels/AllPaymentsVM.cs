@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace FinanceTracker.ViewModels
 {
-    class AllPaymentsVM : ViewModelBase
+    public class AllPaymentsVM : ViewModelBase
     {
 		private ObservableCollection<PaymentVM> _payments;
 

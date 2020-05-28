@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FinanceTracker.ViewModels
 {
-    class EmployeeVM : ViewModelBase
+    public class EmployeeVM : ViewModelBase
     {
         private Employee modelObject;
 
@@ -82,7 +82,7 @@ namespace FinanceTracker.ViewModels
 
         internal void UpdateEmployee(EmployeeVM employee)
         {
-            DBHelper.UpdatedEmployee(employee.modelObject);
+            DBHelper.UpdateEmployee(employee.modelObject);
         }
 
         public Center Center 
@@ -115,6 +115,11 @@ namespace FinanceTracker.ViewModels
         public EmployeeVM(Employee employee)
         {
             this.modelObject = employee;
+        }
+
+        public EmployeeVM()
+        {
+            this.modelObject = new Employee();
         }
     }
 }

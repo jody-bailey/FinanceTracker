@@ -2,13 +2,14 @@
 using FinanceTracker.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FinanceTracker.ViewModels
 {
-    class ClaimVM : ViewModelBase
+    public class ClaimVM : ViewModelBase
     {
         private Claim modelObject;
 
@@ -49,6 +50,34 @@ namespace FinanceTracker.ViewModels
                 }
                 modelObject.Employee = value;
                 OnPropertyChanged("Employee");
+            }
+        }
+
+        public string EmployeeFullName
+        {
+            get { return modelObject.Employee.FullName; }
+            set
+            {
+                if (modelObject.Employee.FullName == value)
+                {
+                    return;
+                }
+                modelObject.Employee.FullName = value;
+                OnPropertyChanged("EmployeeFullName");
+            }
+        }
+
+        public string EmployeeSSN
+        {
+            get { return modelObject.Employee.SSN; }
+            set
+            {
+                if (modelObject.Employee.SSN == value)
+                {
+                    return;
+                }
+                modelObject.Employee.SSN = value;
+                OnPropertyChanged("EmployeeSSN");
             }
         }
         public int ReferenceNum 
@@ -130,14 +159,59 @@ namespace FinanceTracker.ViewModels
             }
         }
 
-        public void UpdateClaim(ClaimVM claimVM)
+        private ObservableCollection<Center> _centers;
+
+        public ObservableCollection<Center> Centers
         {
-            DBHelper.UpdateClaim(claimVM.modelObject);
+            get { return _centers; }
+            set
+            {
+                if (_centers == value)
+                {
+                    return;
+                }
+                _centers = value;
+                OnPropertyChanged("Centers");
+            }
+        }
+
+        private Center _selectedCenter;
+
+        public Center SelectedCenter
+        {
+            get { return _selectedCenter; }
+            set
+            {
+                if (_selectedCenter == value)
+                {
+                    return;
+                }
+                _selectedCenter = value;
+                modelObject.Employee.Center = value;
+                modelObject.Employee.CenterId = value.CenterId;
+                OnPropertyChanged("SelectedCenter");
+            }
+        }
+
+        public void UpdateClaim()
+        {
+            DBHelper.UpdateClaim(this.modelObject);
         }
 
         public ClaimVM(Claim claim)
         {
             this.modelObject = claim;
+            this._centers = new ObservableCollection<Center>(DBHelper.GetCenters());
+            this._selectedCenter = _centers.Where(c => c.CenterId == claim.Employee.CenterId).SingleOrDefault();
+        }
+
+        public ClaimVM()
+        {
+            this.modelObject = new Claim();
+            this.modelObject.Employee = new Employee();
+            this.modelObject.StatusDate = DateTime.Now.Date;
+            this.modelObject.ClaimDate = DateTime.Now.Date;
+            this._centers = new ObservableCollection<Center>(DBHelper.GetCenters());
         }
     }
 }

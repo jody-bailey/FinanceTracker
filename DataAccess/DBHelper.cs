@@ -32,6 +32,44 @@ namespace FinanceTracker.DataAccess
             return result;
         }
 
+        public static bool InsertClaim(Claim claim)
+        {
+            bool result = false;
+
+            using (var db = new FinanceDBContext())
+            {
+                claim.EmployeeId = claim.Employee.EmployeeId;
+                claim.Employee = null;
+                db.Claims.Add(claim);
+                int numRows = db.SaveChanges();
+                if (numRows > 0)
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
+        public static bool InsertEmployee(Employee employee)
+        {
+            bool result = false;
+
+            using (var db = new FinanceDBContext())
+            {
+                employee.Center = null;
+                db.Employees.Add(employee);
+                int numRows = db.SaveChanges();
+
+                if (numRows > 0)
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
         public static bool Delete<T>(T item) where T : class
         {
             bool result = false;
@@ -71,7 +109,12 @@ namespace FinanceTracker.DataAccess
                         oldClaim.RequestType = claim.RequestType;
                         oldClaim.StatusDate = claim.StatusDate;
                         oldClaim.WorkLocation = claim.WorkLocation;
+                        UpdateEmployee(claim.Employee);
                         db.SaveChanges();
+                    } else
+                    {
+                        InsertEmployee(claim.Employee);
+                        InsertClaim(claim);
                     }
                 } catch (Exception ex)
                 {
@@ -81,7 +124,7 @@ namespace FinanceTracker.DataAccess
             }
         }
 
-        public static void UpdatedEmployee(Employee employee)
+        public static void UpdateEmployee(Employee employee)
         {
             using (FinanceDBContext db = new FinanceDBContext())
             {
@@ -173,6 +216,18 @@ namespace FinanceTracker.DataAccess
                     oldPayment.AmountPaid = payment.AmountPaid;
                 }
             }
+        }
+
+        public static List<Center> GetCenters()
+        {
+            List<Center> centers = new List<Center>();
+
+            using (var db = new FinanceDBContext())
+            {
+                centers.AddRange(db.Centers.ToList());
+            }
+
+            return centers;
         }
     }
 }

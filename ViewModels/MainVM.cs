@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FinanceTracker.ViewModels
 {
-	class MainVM : ViewModelBase
+	public class MainVM : ViewModelBase
 	{
 		private ObservableCollection<ViewModelBase> _allViewModels;
 

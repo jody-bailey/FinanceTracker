@@ -11,9 +11,11 @@ namespace FinanceTracker.Models
     [Table("Claims")]
     public class Claim
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ClaimId { get; set; }
+        [Required]
         public int EmployeeId { get; set; }
+        [ForeignKey("EmployeeId")]
         public Employee Employee { get; set; }
         public int ReferenceNum { get; set; }
         public string RequestType { get; set; }

@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace FinanceTracker.ViewModels
 {
-	class AllClaimsVM : ViewModelBase
+	public class AllClaimsVM : ViewModelBase
 	{
 
 		private ObservableCollection<ClaimVM> _claims;
@@ -65,10 +65,10 @@ namespace FinanceTracker.ViewModels
 
 		void Claim_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			_isChanged = true;
+			IsChanged = true;
 			ClaimVM claim = sender as ClaimVM;
 
-			claim.UpdateClaim(claim);
+			//claim.UpdateClaim(claim);
 		}
 
 		private List<ClaimVM> GetAllClaims()
@@ -94,14 +94,25 @@ namespace FinanceTracker.ViewModels
 				{
 					foreach(var claim in _claims)
 					{
-						claim.UpdateClaim(claim);
+						claim.UpdateClaim();
 					}
-					_isChanged = false;
+					IsChanged = false;
 				});
 			}
 		}
 
+		private ICommand _addNewClaim;
 
+		public ICommand AddNewClaim
+		{
+			get 
+			{
+				return new RelayCommand(c =>
+				{
+					_claims.Add(new ClaimVM());
+				});
+			}
+		}
 
 		public AllClaimsVM()
 		{

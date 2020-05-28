@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FinanceTracker.ViewModels
 {
-    class PaymentVM : ViewModelBase
+    public class PaymentVM : ViewModelBase
     {
         private Payment modelObject;
 

@@ -20,15 +20,28 @@
         <DataGrid Grid.Row="1"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding Claims, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  CanUserAddRows="True"
-                  CanUserDeleteRows="True"
+                  CanUserAddRows="False"
                   CanUserReorderColumns="True"
                   CanUserResizeRows="True"
                   CanUserSortColumns="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Reference #" Binding="{Binding ReferenceNum, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="Name" Binding="{Binding Employee.FullName, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="SSN" Binding="{Binding RequestType,  UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTemplateColumn Header="Center">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding Centers}" SelectedItem="{Binding SelectedCenter, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Name" Binding="{Binding EmployeeFullName, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="SSN" Binding="{Binding EmployeeSSN, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Request Type" Binding="{Binding RequestType,  UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Work Location" Binding="{Binding WorkLocation, UpdateSourceTrigger=PropertyChanged}"/>
                 <!--<DataGridTextColumn Header="Status Date" Binding="{Binding StatusDate.Date}"/>-->
                 <!--<DataGridTextColumn Header="Caim Date" Binding="{Binding ClaimDate.Date}"/>-->
@@ -49,10 +62,13 @@
             </DataGrid.Columns>
         </DataGrid>
         <Grid Grid.Row="2">
+            <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Left">
+                <Button Content="Add Claim" Command="{Binding AddNewClaim}"/>
+            </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right">
-                <Button Content="Cancel" Margin="5 0"/>
-                <Button Content="Delete" Margin="5 0"/>
-                <Button Content="Save" IsEnabled="{Binding IsChanged}" Margin="5 0"/>
+                    <Button Content="Cancel" Margin="5 0"/>
+                    <Button Content="Delete" Margin="5 0"/>
+                    <Button Content="Save" Command="{Binding SaveCommand}" IsEnabled="{Binding IsChanged}" Margin="5 0"/>
             </StackPanel>
         </Grid>
     </Grid>

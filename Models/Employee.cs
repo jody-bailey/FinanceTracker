@@ -11,11 +11,13 @@ namespace FinanceTracker.Models
     [Table("Employees")]
     public class Employee
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int EmployeeId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        [Required]
         public int CenterId { get; set; }
+        [ForeignKey("CenterId")]
         public Center Center { get; set; }
         public string SSN { get; set; }
 

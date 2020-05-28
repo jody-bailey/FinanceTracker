@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FinanceTracker.ViewModels
 {
-    class ViewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
         public string Title { get; set; }
         public PackIconKind Icon { get; set; }

@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace FinanceTracker.ViewModels.shared
 {
-    class RelayCommand : ICommand
+    public class RelayCommand : ICommand
     {
         #region Fields 
         readonly Action<object> _execute;

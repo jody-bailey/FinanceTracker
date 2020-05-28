@@ -11,8 +11,11 @@ namespace FinanceTracker.Models
     [Table("Payments")]
     public class Payment
     {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PaymentId { get; set; }
+        [Required]
         public int ClaimId { get; set; }
+        [ForeignKey("ClaimId")]
         public Claim Claim { get; set; }
         public DateTime DueDate { get; set; }
         public decimal AmountPaid { get; set; }

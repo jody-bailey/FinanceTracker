@@ -1,5 +1,6 @@
 ﻿using FinanceTracker.DataAccess;
 using FinanceTracker.Models;
+using FinanceTracker.ViewModels.shared;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace FinanceTracker.ViewModels
 {
-	class AllEmployeesVM : ViewModelBase
+	public class AllEmployeesVM : ViewModelBase
 	{
 
 		private ObservableCollection<EmployeeVM> _employees;
@@ -64,6 +66,20 @@ namespace FinanceTracker.ViewModels
 
 			return employeeVMs;
 		}
+
+		private ICommand _addEmployeeCommand;
+
+		public ICommand AddEmployeeCommand
+		{
+			get 
+			{
+				return new RelayCommand(c =>
+				{
+					_employees.Add(new EmployeeVM());
+				});
+			}
+		}
+
 
 		public AllEmployeesVM()
 		{
